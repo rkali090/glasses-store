@@ -1,38 +1,34 @@
 import Link from "next/link";
+import { FrameArt } from "@/components/frame-art";
+import { ProductOptions } from "@/components/product-options";
+import { SiteHeader } from "@/components/site-header";
 import { formatMoney, getProduct, products } from "@/lib/products";
 
 export function generateStaticParams() {
   return products.map((product) => ({ slug: product.slug }));
 }
 
-function FrameArt({ gradient }: { gradient: string }) {
-  return (
-    <div className={`relative h-[28rem] overflow-hidden rounded-[2.5rem] bg-gradient-to-br ${gradient} product-lens stripe-shadow`}>
-      <div className="absolute inset-x-8 top-40 flex items-center justify-center gap-4">
-        <span className="h-28 w-40 rounded-full border-[14px] border-[#11263d] bg-white/30 shadow-inner" />
-        <span className="h-4 w-14 rounded-full bg-[#11263d]" />
-        <span className="h-28 w-40 rounded-full border-[14px] border-[#11263d] bg-white/30 shadow-inner" />
-      </div>
-      <div className="absolute left-1/2 top-[14.5rem] h-3 w-24 -translate-x-1/2 rounded-full bg-[#b88a44]" />
-      <div className="absolute right-8 top-8 rounded-full bg-white/70 px-4 py-2 text-sm font-semibold text-[#11263d]">Mock product render</div>
-    </div>
-  );
-}
-
 export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const product = getProduct(slug);
   if (!product) return <main className="grid min-h-screen place-items-center p-10">Product not found.</main>;
+  const related = products.filter((item) => item.slug !== product.slug).slice(0, 3);
 
   return (
-    <main className="min-h-screen px-5 py-8">
+    <main className="min-h-screen px-5 pb-16 pt-28">
+      <SiteHeader />
       <div className="mx-auto max-w-7xl">
-        <nav className="mb-8 flex items-center justify-between rounded-full bg-white/70 px-5 py-4 backdrop-blur-xl">
-          <Link href="/" className="font-semibold text-[#11263d]">← LumaLens</Link>
-          <Link href="/#shop" className="rounded-full bg-[#11263d] px-5 py-3 text-sm font-semibold text-white">Back to shop</Link>
-        </nav>
+        <div className="mb-8 flex items-center justify-between rounded-full bg-white/70 px-5 py-4 backdrop-blur-xl">
+          <Link href="/" className="font-semibold text-[#11263d]">← Continue shopping</Link>
+          <Link href="/cart" className="rounded-full bg-[#11263d] px-5 py-3 text-sm font-semibold text-white">View cart</Link>
+        </div>
         <section className="grid gap-10 lg:grid-cols-2 lg:items-start">
-          <FrameArt gradient={product.gradient} />
+          <div className="grid gap-5">
+            <FrameArt gradient={product.gradient} large />
+            <div className="grid gap-4 sm:grid-cols-3">
+              {product.features.map((feature) => <div key={feature} className="rounded-3xl bg-white/70 p-4 text-sm font-semibold text-[#11263d]">✓ {feature}</div>)}
+            </div>
+          </div>
           <div className="glass-card rounded-[2.5rem] p-8 md:p-10">
             <p className="text-sm font-semibold uppercase tracking-[.2em] text-[#0f766e]">{product.collection}</p>
             <h1 className="mt-3 text-5xl font-semibold tracking-[-.05em] text-[#0c1b2a]">{product.name}</h1>
@@ -41,14 +37,16 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             <div className="mt-8 flex items-end gap-3"><span className="text-4xl font-semibold">{formatMoney(product.price)}</span>{product.compareAt && <span className="pb-1 text-lg text-[#5b6b7d] line-through">{formatMoney(product.compareAt)}</span>}</div>
             <p className="mt-2 text-sm text-[#5b6b7d]">★ {product.rating} from {product.reviews} verified reviews</p>
             <div className="mt-8 grid gap-4 sm:grid-cols-2">
-              <div className="rounded-3xl bg-white p-5"><p className="text-sm text-[#5b6b7d]">Color</p><b>{product.color}</b></div>
-              <div className="rounded-3xl bg-white p-5"><p className="text-sm text-[#5b6b7d]">Fit</p><b>{product.fit}</b></div>
+              <div className="rounded-3xl bg-white p-5"><p className="text-sm text-[#5b6b7d]">Default color</p><b>{product.color}</b></div>
+              <div className="rounded-3xl bg-white p-5"><p className="text-sm text-[#5b6b7d]">Recommended fit</p><b>{product.fit}</b></div>
               <div className="rounded-3xl bg-white p-5 sm:col-span-2"><p className="text-sm text-[#5b6b7d]">Lens compatibility</p><b>{product.lens}</b></div>
             </div>
-            <h2 className="mt-9 text-2xl font-semibold">What&apos;s included</h2>
-            <ul className="mt-4 space-y-3 text-[#5b6b7d]">{product.features.map((feature) => <li key={feature}>✓ {feature}</li>)}</ul>
-            <Link href="/#shop" className="mt-9 block rounded-full bg-[#0f766e] px-7 py-4 text-center font-semibold text-white">Add from storefront cart</Link>
+            <ProductOptions product={product} />
           </div>
+        </section>
+        <section className="mt-16">
+          <h2 className="text-3xl font-semibold tracking-[-.04em]">You may also like</h2>
+          <div className="mt-6 grid gap-5 md:grid-cols-3">{related.map((item) => <Link href={`/products/${item.slug}`} key={item.slug} className="rounded-[2rem] bg-white/70 p-4"><FrameArt gradient={item.gradient} /><b className="mt-4 block text-xl">{item.name}</b><span className="text-[#5b6b7d]">{formatMoney(item.price)}</span></Link>)}</div>
         </section>
       </div>
     </main>
