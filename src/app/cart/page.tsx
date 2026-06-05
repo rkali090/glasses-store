@@ -85,18 +85,18 @@ export default function CartPage() {
             <Link href="/checkout" className={`interactive-lift mt-6 block rounded-full px-7 py-4 text-center font-semibold ${details.count ? "bg-[#0b5f59] text-white" : "pointer-events-none bg-[#d7e3e1] text-[#334155]"}`}>Proceed to payment</Link>
           </aside>
         </div>
-        <section className="mt-10 grid gap-5 md:grid-cols-3">
-          <div className="rounded-[2rem] bg-white/80 p-6 stripe-shadow">
-            <h2 className="text-2xl font-semibold tracking-[-.03em] text-[#11263d]">Free adjustments</h2>
-            <p className="mt-3 text-[#334155]">Every order includes a 30-day fit check. Bring the frame to a partner optician or request an adjustment guide.</p>
+        <section className="mt-16 grid gap-7 md:grid-cols-3 lg:mt-20">
+          <div className="min-h-44 rounded-[2.25rem] bg-white/80 p-8 stripe-shadow">
+            <h2 className="text-[1.35rem] font-semibold leading-tight tracking-[-.035em] text-[#11263d]">Free adjustments</h2>
+            <p className="mt-4 text-[0.95rem] leading-7 text-[#334155]">Every order includes a 30-day fit check. Bring the frame to a partner optician or request an adjustment guide.</p>
           </div>
-          <div className="rounded-[2rem] bg-white/80 p-6 stripe-shadow">
-            <h2 className="text-2xl font-semibold tracking-[-.03em] text-[#11263d]">Prescription handling</h2>
-            <p className="mt-3 text-[#334155]">Your cart keeps Rx choices attached to each pair so checkout and fulfillment can stay clear.</p>
+          <div className="min-h-44 rounded-[2.25rem] bg-white/80 p-8 stripe-shadow">
+            <h2 className="text-[1.35rem] font-semibold leading-tight tracking-[-.035em] text-[#11263d]">Prescription handling</h2>
+            <p className="mt-4 text-[0.95rem] leading-7 text-[#334155]">Your cart keeps Rx choices attached to each pair so checkout and fulfillment can stay clear.</p>
           </div>
-          <div className="rounded-[2rem] bg-[#11263d] p-6 text-white stripe-shadow">
-            <h2 className="text-2xl font-semibold tracking-[-.03em]">Protected checkout</h2>
-            <p className="mt-3 text-[#e8f0ef]">High-contrast review cards make totals, shipping, tax, and payment actions readable before purchase.</p>
+          <div className="min-h-44 rounded-[2.25rem] bg-[#11263d] p-8 text-white stripe-shadow">
+            <h2 className="text-[1.35rem] font-semibold leading-tight tracking-[-.035em]">Protected checkout</h2>
+            <p className="mt-4 text-[0.95rem] leading-7 text-[#e8f0ef]">High-contrast review cards make totals, shipping, tax, and payment actions readable before purchase.</p>
           </div>
         </section>
       </section>
