@@ -53,6 +53,9 @@ a:not([class]) { color: inherit; }
   content-visibility: auto;
   contain-intrinsic-size: auto 14rem;
 }
+.lazy-frame-art-compact {
+  contain-intrinsic-size: auto 8rem;
+}
 .lazy-frame-placeholder {
   filter: saturate(.9);
 }

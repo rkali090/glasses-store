@@ -28,28 +28,53 @@ export default function CartPage() {
   return (
     <main className="min-h-screen px-5 pb-16 pt-28">
       <SiteHeader />
-      <section className="mx-auto max-w-7xl">
+      <section className="mx-auto max-w-[72rem]">
         <div className="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-end">
           <div><p className="text-sm font-semibold uppercase tracking-[.2em] text-[#0b5f59]">Full cart</p><h1 className="mt-3 text-5xl font-semibold tracking-[-.05em]">Review your eyewear order.</h1></div>
           <Link href="/#shop" className="interactive-lift rounded-full border border-[#11263d]/25 bg-white px-6 py-4 text-center font-semibold text-[#11263d] hover:border-[#11263d]">Continue shopping</Link>
         </div>
-        <div className="grid gap-8 lg:grid-cols-[1fr_25rem]">
-          <div className="grid gap-4">
+        <div className="grid gap-6">
+          <div className="grid max-w-2xl items-start gap-4">
             {details.lines.length === 0 ? (
               <div className="rounded-[2rem] bg-white p-10 text-center stripe-shadow"><h2 className="text-2xl font-semibold">Your cart is empty.</h2><p className="mt-3 text-[#334155]">Add a configured pair from a product page or quick-add from the storefront.</p><Link href="/#shop" className="mt-6 inline-block interactive-lift rounded-full bg-[#11263d] px-7 py-4 font-semibold text-white">Shop frames</Link></div>
             ) : details.lines.map((line) => {
               const product = line.product!;
               const key = lineKey(line);
               return (
-                <article key={key} className="grid gap-5 rounded-[2rem] bg-white/80 p-4 stripe-shadow md:grid-cols-[15rem_1fr_auto]">
-                  <LazyFrameArt gradient={product.gradient} />
-                  <div className="p-2"><Link href={`/products/${product.slug}`} className="text-2xl font-semibold tracking-[-.03em] text-[#11263d]">{product.name}</Link><p className="mt-2 text-[#334155]">{product.description}</p><div className="mt-4 grid gap-2 text-sm text-[#334155] sm:grid-cols-2"><span><b className="text-[#11263d]">Lens:</b> {line.lens}</span><span><b className="text-[#11263d]">Fit:</b> {line.frameSize}</span><span><b className="text-[#11263d]">Color:</b> {line.color}</span><span><b className="text-[#11263d]">Rx:</b> {line.prescription}</span></div></div>
-                  <div className="flex items-center justify-between gap-4 md:block md:text-right"><select value={line.qty} onChange={(e) => setQty(key, Number(e.target.value))} className="rounded-2xl border border-slate-200 bg-white px-3 py-3">{[0,1,2,3,4,5].map((n) => <option key={n}>{n}</option>)}</select><p className="mt-3 text-xl font-semibold">{formatMoney(((product.price) + (line.lens === "Blue-light" ? 30 : line.lens === "Single vision" ? 80 : line.lens === "Progressive" ? 180 : 0)) * line.qty)}</p><button onClick={() => setQty(key, 0)} className="mt-3 text-sm font-semibold text-red-600">Remove</button></div>
+                <article key={key} className="flex h-fit flex-col gap-4 rounded-[1.5rem] bg-white/85 p-3 stripe-shadow md:flex-row md:items-center">
+                  <LazyFrameArt gradient={product.gradient} compact />
+                  <div className="min-w-0 flex-1 px-1 py-1">
+                    <Link href={`/products/${product.slug}`} className="text-xl font-semibold tracking-[-.03em] text-[#11263d]">{product.name}</Link>
+                    <p className="mt-1 line-clamp-2 text-sm leading-6 text-[#334155]">{product.description}</p>
+                    <div className="mt-3 grid gap-x-4 gap-y-1 text-xs text-[#334155] sm:grid-cols-2">
+                      <span><b className="text-[#11263d]">Lens:</b> {line.lens}</span>
+                      <span><b className="text-[#11263d]">Fit:</b> {line.frameSize}</span>
+                      <span><b className="text-[#11263d]">Color:</b> {line.color}</span>
+                      <span><b className="text-[#11263d]">Rx:</b> {line.prescription}</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between gap-3 md:w-28 md:shrink-0 md:flex-col md:items-end md:justify-center md:text-right">
+                    <label className="sr-only" htmlFor={`qty-${key}`}>Quantity for {product.name}</label>
+                    <div className="relative">
+                      <select
+                        id={`qty-${key}`}
+                        value={line.qty}
+                        onChange={(e) => setQty(key, Number(e.target.value))}
+                        className="h-11 w-20 cursor-pointer appearance-none rounded-full border border-[#11263d]/15 bg-white px-4 pr-8 text-center font-semibold text-[#11263d] shadow-sm outline-none transition hover:border-[#11263d]/35 focus:border-[#0b5f59] focus:ring-4 focus:ring-[#0b5f59]/10"
+                        aria-label={`Quantity for ${product.name}`}
+                      >
+                        {[0,1,2,3,4,5].map((n) => <option key={n} value={n}>{n}</option>)}
+                      </select>
+                      <span aria-hidden="true" className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[#11263d]">⌄</span>
+                    </div>
+                    <p className="text-lg font-semibold">{formatMoney(((product.price) + (line.lens === "Blue-light" ? 30 : line.lens === "Single vision" ? 80 : line.lens === "Progressive" ? 180 : 0)) * line.qty)}</p>
+                    <button onClick={() => setQty(key, 0)} className="text-sm font-semibold text-red-600 transition hover:text-red-700">Remove</button>
+                  </div>
                 </article>
               );
             })}
           </div>
-          <aside className="h-fit rounded-[2rem] bg-[#11263d] p-6 text-white stripe-shadow">
+          <aside className="h-fit max-w-2xl rounded-[2rem] bg-[#11263d] p-6 text-white stripe-shadow">
             <h2 className="text-2xl font-semibold">Order summary</h2>
             <div className="mt-6 space-y-3 text-sm text-[#e8f0ef]"><div className="flex justify-between"><span>Subtotal</span><b className="text-white">{formatMoney(details.subtotal)}</b></div><div className="flex justify-between"><span>Shipping</span><b className="text-white">{details.shipping === 0 ? "Free" : formatMoney(details.shipping)}</b></div><div className="flex justify-between"><span>Estimated tax</span><b className="text-white">{formatMoney(details.tax)}</b></div><div className="flex justify-between border-t border-white/15 pt-4 text-xl text-white"><span>Total</span><b>{formatMoney(details.total)}</b></div></div>
             <div className="mt-6 rounded-3xl bg-white/10 p-4 text-sm text-[#e8f0ef]"><b className="text-white">Options included:</b><p className="mt-2">Lens selection, frame fit, color, prescription handling, and quantity edits are preserved into checkout.</p></div>
