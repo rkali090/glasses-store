@@ -62,6 +62,32 @@ a:not([class]) { color: inherit; }
 .interactive-lift:hover {
   transform: translateY(-2px);
 }
+.quick-add-button {
+  min-width: 6.25rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 12px 28px rgba(17, 38, 61, .18);
+  transition: transform .22s cubic-bezier(.2, .8, .2, 1), box-shadow .22s ease, background-color .22s ease, color .22s ease;
+}
+.quick-add-button:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 18px 34px rgba(17, 38, 61, .24);
+}
+.quick-add-button:active {
+  transform: translateY(0) scale(.97);
+}
+.quick-add-button.is-clicked {
+  background-color: #0b5f59;
+  animation: quick-add-confirm 1.2s cubic-bezier(.2, .8, .2, 1);
+  box-shadow: 0 0 0 6px rgba(11, 95, 89, .14), 0 18px 34px rgba(11, 95, 89, .24);
+}
+.quick-add-button.is-clicked::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, rgba(255,255,255,.48) 0%, rgba(255,255,255,0) 62%);
+  animation: quick-add-flash .65s ease-out;
+}
 .reveal-up {
   animation: reveal-up .65s cubic-bezier(.2, .8, .2, 1) both;
 }
@@ -71,6 +97,15 @@ a:not([class]) { color: inherit; }
 @keyframes reveal-up {
   from { opacity: 0; transform: translateY(18px); }
   to { opacity: 1; transform: translateY(0); }
+}
+@keyframes quick-add-confirm {
+  0% { transform: scale(1); }
+  35% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+@keyframes quick-add-flash {
+  from { opacity: .9; transform: scale(.2); }
+  to { opacity: 0; transform: scale(2.8); }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
