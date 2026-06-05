@@ -39,7 +39,7 @@ function FooterColumn({ title, links }: { title: string; links: { label: string;
 
 export function SiteFooter() {
   return (
-    <footer className="mt-20 border-t border-[#11263d]/10 bg-[#0c1b2a] text-white">
+    <footer className="lazy-render mt-20 border-t border-[#11263d]/10 bg-[#0c1b2a] text-white">
       <div className="mx-auto max-w-7xl px-5 py-14 md:py-16">
         <div className="grid gap-10 lg:grid-cols-[1.15fr_1.85fr]">
           <div>
