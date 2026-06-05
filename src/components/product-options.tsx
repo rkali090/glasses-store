@@ -42,9 +42,9 @@ export function ProductOptions({ product }: { product: Product }) {
           <p className="text-sm font-semibold text-[#11263d]">Lens type</p>
           <div className="mt-2 grid gap-3 sm:grid-cols-2">
             {lensOptions.map((option) => (
-              <button key={option.name} onClick={() => setLens(option.name)} className={`rounded-2xl border p-4 text-left transition ${lens === option.name ? "border-[#0f766e] bg-[#e8f0ef]" : "border-slate-200 bg-white"}`}>
+              <button key={option.name} onClick={() => setLens(option.name)} className={`rounded-2xl border p-4 text-left transition ${lens === option.name ? "border-[#0b5f59] bg-[#e8f0ef]" : "border-slate-200 bg-white"}`}>
                 <span className="block font-semibold">{option.name} {option.price ? `+${formatMoney(option.price)}` : ""}</span>
-                <span className="mt-1 block text-sm text-[#5b6b7d]">{option.description}</span>
+                <span className="mt-1 block text-sm text-[#334155]">{option.description}</span>
               </button>
             ))}
           </div>
@@ -69,7 +69,7 @@ export function ProductOptions({ product }: { product: Product }) {
         <button onClick={submit} className="rounded-full bg-[#11263d] px-7 py-4 font-semibold text-white">Add configured pair</button>
         <Link href="/cart" className="rounded-full border border-[#11263d]/15 px-7 py-4 text-center font-semibold text-[#11263d]">Go to full cart</Link>
       </div>
-      {added && <p className="mt-3 rounded-2xl bg-[#e8f0ef] p-3 text-sm font-semibold text-[#0f766e]">Added with your selected options.</p>}
+      {added && <p className="mt-3 rounded-2xl bg-[#e8f0ef] p-3 text-sm font-semibold text-[#0b5f59]">Added with your selected options.</p>}
     </div>
   );
 }

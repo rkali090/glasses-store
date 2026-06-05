@@ -30,23 +30,23 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             </div>
           </div>
           <div className="glass-card rounded-[2.5rem] p-8 md:p-10">
-            <p className="text-sm font-semibold uppercase tracking-[.2em] text-[#0f766e]">{product.collection}</p>
+            <p className="text-sm font-semibold uppercase tracking-[.2em] text-[#0b5f59]">{product.collection}</p>
             <h1 className="mt-3 text-5xl font-semibold tracking-[-.05em] text-[#0c1b2a]">{product.name}</h1>
-            <p className="mt-4 text-lg leading-8 text-[#5b6b7d]">{product.description}</p>
-            <div className="mt-6 flex flex-wrap gap-2">{product.tags.map((tag) => <span key={tag} className="rounded-full bg-[#e8f0ef] px-3 py-1 text-sm font-semibold text-[#0f766e]">{tag}</span>)}</div>
-            <div className="mt-8 flex items-end gap-3"><span className="text-4xl font-semibold">{formatMoney(product.price)}</span>{product.compareAt && <span className="pb-1 text-lg text-[#5b6b7d] line-through">{formatMoney(product.compareAt)}</span>}</div>
-            <p className="mt-2 text-sm text-[#5b6b7d]">★ {product.rating} from {product.reviews} verified reviews</p>
+            <p className="mt-4 text-lg leading-8 text-[#334155]">{product.description}</p>
+            <div className="mt-6 flex flex-wrap gap-2">{product.tags.map((tag) => <span key={tag} className="rounded-full bg-[#e8f0ef] px-3 py-1 text-sm font-semibold text-[#0b5f59]">{tag}</span>)}</div>
+            <div className="mt-8 flex items-end gap-3"><span className="text-4xl font-semibold">{formatMoney(product.price)}</span>{product.compareAt && <span className="pb-1 text-lg text-[#334155] line-through">{formatMoney(product.compareAt)}</span>}</div>
+            <p className="mt-2 text-sm text-[#334155]">★ {product.rating} from {product.reviews} verified reviews</p>
             <div className="mt-8 grid gap-4 sm:grid-cols-2">
-              <div className="rounded-3xl bg-white p-5"><p className="text-sm text-[#5b6b7d]">Default color</p><b>{product.color}</b></div>
-              <div className="rounded-3xl bg-white p-5"><p className="text-sm text-[#5b6b7d]">Recommended fit</p><b>{product.fit}</b></div>
-              <div className="rounded-3xl bg-white p-5 sm:col-span-2"><p className="text-sm text-[#5b6b7d]">Lens compatibility</p><b>{product.lens}</b></div>
+              <div className="rounded-3xl bg-white p-5"><p className="text-sm text-[#334155]">Default color</p><b>{product.color}</b></div>
+              <div className="rounded-3xl bg-white p-5"><p className="text-sm text-[#334155]">Recommended fit</p><b>{product.fit}</b></div>
+              <div className="rounded-3xl bg-white p-5 sm:col-span-2"><p className="text-sm text-[#334155]">Lens compatibility</p><b>{product.lens}</b></div>
             </div>
             <ProductOptions product={product} />
           </div>
         </section>
         <section className="mt-16">
           <h2 className="text-3xl font-semibold tracking-[-.04em]">You may also like</h2>
-          <div className="mt-6 grid gap-5 md:grid-cols-3">{related.map((item) => <Link href={`/products/${item.slug}`} key={item.slug} className="rounded-[2rem] bg-white/70 p-4"><FrameArt gradient={item.gradient} /><b className="mt-4 block text-xl">{item.name}</b><span className="text-[#5b6b7d]">{formatMoney(item.price)}</span></Link>)}</div>
+          <div className="mt-6 grid gap-5 md:grid-cols-3">{related.map((item) => <Link href={`/products/${item.slug}`} key={item.slug} className="rounded-[2rem] bg-white/70 p-4"><FrameArt gradient={item.gradient} /><b className="mt-4 block text-xl">{item.name}</b><span className="text-[#334155]">{formatMoney(item.price)}</span></Link>)}</div>
         </section>
       </div>
     </main>
