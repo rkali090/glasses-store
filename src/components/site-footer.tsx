@@ -2,24 +2,24 @@ import Link from "next/link";
 import { NewsletterForm } from "@/components/newsletter-form";
 
 const shopLinks = [
-  { label: "Shop all frames", href: "/#shop-all" },
-  { label: "Blue-light glasses", href: "/#shop-blue-light" },
-  { label: "Prescription ready", href: "/#shop-prescription" },
+  { label: "Shop all frames", href: "/shop" },
+  { label: "Blue-light glasses", href: "/shop/blue-light" },
+  { label: "Prescription ready", href: "/shop/prescription" },
   { label: "Checkout demo", href: "/checkout" },
 ];
 
 const supportLinks = [
-  { label: "Fit guarantee", href: "/#trust" },
+  { label: "Fit guarantee", href: "/trust" },
   { label: "Lens options", href: "/products/atlas-tortoise" },
   { label: "Cart review", href: "/cart" },
   { label: "Payment security", href: "/checkout" },
 ];
 
 const companyLinks = [
-  { label: "Our promise", href: "/#trust" },
-  { label: "Try-on flow", href: "/#tryon" },
-  { label: "Storefront features", href: "/#top" },
-  { label: "Developer notes", href: "/#trust" },
+  { label: "Our promise", href: "/trust" },
+  { label: "Try-on flow", href: "/try-on" },
+  { label: "Storefront features", href: "/features" },
+  { label: "Developer notes", href: "/features" },
 ];
 
 function FooterColumn({ title, links }: { title: string; links: { label: string; href: string }[] }) {
@@ -80,7 +80,7 @@ export function SiteFooter() {
             <Link href="/privacy" className="hover:text-white">Privacy</Link>
             <Link href="/terms" className="hover:text-white">Terms</Link>
             <Link href="/accessibility" className="hover:text-white">Accessibility</Link>
-            <Link href="/#trust" className="hover:text-white">Trust</Link>
+            <Link href="/trust" className="hover:text-white">Trust</Link>
           </div>
         </div>
       </div>

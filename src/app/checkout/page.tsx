@@ -50,7 +50,7 @@ export default function CheckoutPage() {
         <section>
           <p className="text-sm font-semibold uppercase tracking-[.2em] text-[#0b5f59]">Payment process</p>
           <h1 className="mt-3 text-5xl font-semibold tracking-[-.05em]">Secure checkout.</h1>
-          {details.count === 0 && <div className="mt-6 rounded-3xl bg-amber-50 p-5 text-[#6f4a1f]">Your cart is empty. <Link href="/#shop" className="font-semibold underline">Add frames first</Link>.</div>}
+          {details.count === 0 && <div className="mt-6 rounded-3xl bg-amber-50 p-5 text-[#6f4a1f]">Your cart is empty. <Link href="/shop" className="font-semibold underline">Add frames first</Link>.</div>}
 
           <div className="mt-8 grid gap-6">
             <div className="rounded-[2rem] bg-white/80 p-6 stripe-shadow"><h2 className="text-2xl font-semibold">Contact</h2><div className="mt-4 grid gap-4 sm:grid-cols-2"><input required placeholder="Email address" className="rounded-2xl border border-slate-200 px-4 py-4 sm:col-span-2"/><input required placeholder="First name" className="rounded-2xl border border-slate-200 px-4 py-4"/><input required placeholder="Last name" className="rounded-2xl border border-slate-200 px-4 py-4"/></div></div>

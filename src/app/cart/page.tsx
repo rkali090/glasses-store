@@ -31,12 +31,12 @@ export default function CartPage() {
       <section className="mx-auto max-w-[72rem]">
         <div className="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-end">
           <div><p className="text-sm font-semibold uppercase tracking-[.2em] text-[#0b5f59]">Cart</p><h1 className="mt-3 text-5xl font-semibold tracking-[-.05em]">Review your eyewear order.</h1></div>
-          <Link href="/#shop" className="interactive-lift rounded-full border border-[#11263d]/25 bg-white px-6 py-4 text-center font-semibold text-[#11263d] hover:border-[#11263d]">Continue shopping</Link>
+          <Link href="/shop" className="interactive-lift rounded-full border border-[#11263d]/25 bg-white px-6 py-4 text-center font-semibold text-[#11263d] hover:border-[#11263d]">Continue shopping</Link>
         </div>
         <div className="grid items-start gap-6 xl:grid-cols-[minmax(0,42rem)_minmax(19rem,22rem)] xl:justify-center">
           <div className="grid w-full max-w-2xl items-start gap-4">
             {details.lines.length === 0 ? (
-              <div className="rounded-[2rem] bg-white p-10 text-center stripe-shadow"><h2 className="text-2xl font-semibold">Your cart is empty.</h2><p className="mt-3 text-[#334155]">Add a configured pair from a product page or quick-add from the storefront.</p><Link href="/#shop" className="mt-6 inline-block interactive-lift rounded-full bg-[#11263d] px-7 py-4 font-semibold text-white">Shop frames</Link></div>
+              <div className="rounded-[2rem] bg-white p-10 text-center stripe-shadow"><h2 className="text-2xl font-semibold">Your cart is empty.</h2><p className="mt-3 text-[#334155]">Add a configured pair from a product page or quick-add from the storefront.</p><Link href="/shop" className="mt-6 inline-block interactive-lift rounded-full bg-[#11263d] px-7 py-4 font-semibold text-white">Shop frames</Link></div>
             ) : details.lines.map((line) => {
               const product = line.product!;
               const key = lineKey(line);

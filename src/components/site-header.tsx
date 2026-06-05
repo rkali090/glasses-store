@@ -20,9 +20,9 @@ export function SiteHeader() {
   }, []);
 
   const nav = [
-    { href: "/#shop", label: "Shop" },
-    { href: "/#tryon", label: "Try-on" },
-    { href: "/#trust", label: "Trust" },
+    { href: "/shop", label: "Shop" },
+    { href: "/try-on", label: "Try-on" },
+    { href: "/trust", label: "Trust" },
     { href: "/cart", label: "Cart" },
     { href: "/checkout", label: "Payment" },
   ];

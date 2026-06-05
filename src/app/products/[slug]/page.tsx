@@ -20,7 +20,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       <SiteHeader />
       <div className="mx-auto max-w-7xl">
         <div className="mb-8 flex items-center justify-between rounded-full bg-white/70 px-5 py-4 backdrop-blur-xl">
-          <Link href="/" className="font-semibold text-[#11263d]">← Continue shopping</Link>
+          <Link href="/shop" className="font-semibold text-[#11263d]">← Continue shopping</Link>
           <Link href="/cart" className="interactive-lift rounded-full bg-[#11263d] px-5 py-3 text-sm font-semibold text-white">View cart</Link>
         </div>
         <section className="grid min-w-0 gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:items-start">
