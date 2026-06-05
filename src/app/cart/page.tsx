@@ -30,7 +30,7 @@ export default function CartPage() {
       <SiteHeader />
       <section className="mx-auto max-w-[72rem]">
         <div className="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-end">
-          <div><p className="text-sm font-semibold uppercase tracking-[.2em] text-[#0b5f59]">Full cart</p><h1 className="mt-3 text-5xl font-semibold tracking-[-.05em]">Review your eyewear order.</h1></div>
+          <div><p className="text-sm font-semibold uppercase tracking-[.2em] text-[#0b5f59]">Cart</p><h1 className="mt-3 text-5xl font-semibold tracking-[-.05em]">Review your eyewear order.</h1></div>
           <Link href="/#shop" className="interactive-lift rounded-full border border-[#11263d]/25 bg-white px-6 py-4 text-center font-semibold text-[#11263d] hover:border-[#11263d]">Continue shopping</Link>
         </div>
         <div className="grid items-start gap-6 xl:grid-cols-[minmax(0,42rem)_minmax(19rem,22rem)] xl:justify-center">
@@ -41,7 +41,7 @@ export default function CartPage() {
               const product = line.product!;
               const key = lineKey(line);
               return (
-                <article key={key} className="flex h-fit flex-col gap-4 rounded-[1.5rem] bg-white/85 p-3 stripe-shadow md:flex-row md:items-center">
+                <article key={key} className="flex h-fit flex-col gap-4 rounded-[1.5rem] bg-white/85 p-3 stripe-shadow md:flex-row md:items-stretch">
                   <LazyFrameArt gradient={product.gradient} compact />
                   <div className="min-w-0 flex-1 px-1 py-1">
                     <Link href={`/products/${product.slug}`} className="text-xl font-semibold tracking-[-.03em] text-[#11263d]">{product.name}</Link>
@@ -53,7 +53,7 @@ export default function CartPage() {
                       <span><b className="text-[#11263d]">Rx:</b> {line.prescription}</span>
                     </div>
                   </div>
-                  <div className="flex items-center justify-between gap-3 md:w-28 md:shrink-0 md:flex-col md:items-end md:justify-center md:text-right">
+                  <div className="flex items-center justify-between gap-3 md:w-24 md:shrink-0 md:flex-col md:items-end md:self-stretch md:text-right">
                     <label className="sr-only" htmlFor={`qty-${key}`}>Quantity for {product.name}</label>
                     <div className="relative">
                       <select
@@ -67,8 +67,12 @@ export default function CartPage() {
                       </select>
                       <span aria-hidden="true" className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[#11263d]">⌄</span>
                     </div>
-                    <p className="text-lg font-semibold">{formatMoney(((product.price) + (line.lens === "Blue-light" ? 30 : line.lens === "Single vision" ? 80 : line.lens === "Progressive" ? 180 : 0)) * line.qty)}</p>
-                    <button onClick={() => setQty(key, 0)} className="text-sm font-semibold text-red-600 transition hover:text-red-700">Remove</button>
+                    <p className="text-2xl font-bold tracking-[-.03em] text-[#11263d]">{formatMoney(((product.price) + (line.lens === "Blue-light" ? 30 : line.lens === "Single vision" ? 80 : line.lens === "Progressive" ? 180 : 0)) * line.qty)}</p>
+                    <button
+                      onClick={() => setQty(key, 0)}
+                      style={{ fontSize: "0.8125rem", lineHeight: 1 }}
+                      className="cursor-pointer rounded-full px-1.5 py-1 font-semibold text-red-600 transition hover:bg-red-50 hover:text-red-700"
+                    >Remove</button>
                   </div>
                 </article>
               );
