@@ -18,7 +18,7 @@ export function NewsletterForm() {
   }
 
   return (
-    <form onSubmit={submit} className="grid gap-3 sm:grid-cols-[minmax(16rem,1fr)_auto]" aria-label="Newsletter signup">
+    <form onSubmit={submit} className="grid gap-3 sm:grid-cols-[minmax(16rem,1fr)_minmax(9.5rem,auto)]" aria-label="Newsletter signup">
       <label className="sr-only" htmlFor="footer-email">Email address</label>
       <input
         id="footer-email"
@@ -33,7 +33,7 @@ export function NewsletterForm() {
         aria-describedby="newsletter-status"
         className="min-h-12 rounded-full border border-white/20 bg-white px-5 text-[#11263d] placeholder:text-[#334155]"
       />
-      <button type="submit" className="min-h-12 rounded-full bg-[#e8f0ef] px-6 font-semibold text-[#11263d] transition hover:bg-white">
+      <button type="submit" className="min-h-12 min-w-40 rounded-full bg-[#e8f0ef] px-10 font-semibold text-[#11263d] transition hover:bg-white">
         Notify me
       </button>
       <p id="newsletter-status" className={`text-sm sm:col-span-2 ${status === "error" ? "text-amber-100" : "text-[#d7e3e1]"}`} aria-live="polite">

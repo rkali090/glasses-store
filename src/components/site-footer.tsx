@@ -50,12 +50,6 @@ export function SiteFooter() {
             <p className="mt-5 max-w-md text-sm leading-7 text-[#d7e3e1]">
               Premium eyewear storefront demo with product options, cart review, and a Stripe-ready checkout experience designed for confident online buying.
             </p>
-            <div className="mt-6 grid gap-3 text-sm text-[#e8f0ef] sm:grid-cols-2">
-              <p className="rounded-2xl border border-white/15 bg-white/10 p-4">✓ Free shipping over $150</p>
-              <p className="rounded-2xl border border-white/15 bg-white/10 p-4">✓ 30-day fit guarantee</p>
-              <p className="rounded-2xl border border-white/15 bg-white/10 p-4">✓ Prescription-ready lenses</p>
-              <p className="rounded-2xl border border-white/15 bg-white/10 p-4">✓ Secure mock checkout</p>
-            </div>
           </div>
 
           <div className="grid gap-8 sm:grid-cols-3">
@@ -63,6 +57,13 @@ export function SiteFooter() {
             <FooterColumn title="Support" links={supportLinks} />
             <FooterColumn title="Company" links={companyLinks} />
           </div>
+        </div>
+
+        <div className="mt-10 grid gap-3 text-sm font-medium text-[#e8f0ef] sm:grid-cols-2 lg:grid-cols-4">
+          <p className="flex min-h-16 items-center rounded-2xl border border-white/15 bg-white/10 px-4 py-3">✓ Free shipping over $150</p>
+          <p className="flex min-h-16 items-center rounded-2xl border border-white/15 bg-white/10 px-4 py-3">✓ 30-day fit guarantee</p>
+          <p className="flex min-h-16 items-center rounded-2xl border border-white/15 bg-white/10 px-4 py-3">✓ Prescription-ready lenses</p>
+          <p className="flex min-h-16 items-center rounded-2xl border border-white/15 bg-white/10 px-4 py-3">✓ Secure mock checkout</p>
         </div>
 
         <div className="mt-12 grid gap-6 rounded-[2rem] border border-white/15 bg-white/10 p-5 md:grid-cols-[1fr_auto] md:items-center md:p-6">
