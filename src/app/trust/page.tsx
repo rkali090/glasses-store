@@ -1,5 +1,18 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { SiteHeader } from "@/components/site-header";
+import { absoluteUrl, siteName } from "@/lib/site";
+
+export const metadata: Metadata = {
+  title: "Trust center",
+  description: "Review LumaLens fit protection, prescription handling, shipping clarity, and secure mock checkout details.",
+  alternates: { canonical: absoluteUrl("/trust") },
+  openGraph: {
+    title: `Trust center | ${siteName}`,
+    description: "Dedicated trust details for fit, prescription handling, shipping, and payment review.",
+    url: absoluteUrl("/trust"),
+  },
+};
 
 const trustCards = [
   ["Fit protected", "Every order includes a 30-day comfort window and clear adjustment guidance.", "↺"],

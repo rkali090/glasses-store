@@ -1,12 +1,46 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { FrameArt } from "@/components/frame-art";
 import { LazyFrameArt } from "@/components/lazy-frame-art";
 import { ProductOptions } from "@/components/product-options";
 import { SiteHeader } from "@/components/site-header";
 import { formatMoney, getProduct, products } from "@/lib/products";
+import { absoluteUrl, siteName } from "@/lib/site";
 
 export function generateStaticParams() {
   return products.map((product) => ({ slug: product.slug }));
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const product = getProduct(slug);
+  if (!product) {
+    return {
+      title: "Product not found",
+      robots: { index: false, follow: false },
+    };
+  }
+
+  const title = `${product.name} glasses`;
+  const description = `${product.description} Configure ${product.color.toLowerCase()} frames with ${product.lens.toLowerCase()} and ${product.fit.toLowerCase()} fit guidance.`;
+  const url = absoluteUrl(`/products/${product.slug}`);
+
+  return {
+    title,
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      title: `${title} | ${siteName}`,
+      description,
+      url,
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+    },
+  };
 }
 
 export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {

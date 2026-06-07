@@ -1,7 +1,20 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { LazyFrameArt } from "@/components/lazy-frame-art";
 import { SiteHeader } from "@/components/site-header";
 import { formatMoney, products } from "@/lib/products";
+import { absoluteUrl, siteName } from "@/lib/site";
+
+export const metadata: Metadata = {
+  title: "Prescription-ready optical frames",
+  description: "Shop LumaLens optical frames that preserve prescription handling through product configuration, cart review, and checkout.",
+  alternates: { canonical: absoluteUrl("/shop/prescription") },
+  openGraph: {
+    title: `Prescription-ready optical frames | ${siteName}`,
+    description: "Choose premium prescription-ready glasses with fit guidance and lens handling options.",
+    url: absoluteUrl("/shop/prescription"),
+  },
+};
 
 const prescriptionFrames = products.filter((product) => product.tags.includes("Prescription") || product.lens.toLowerCase().includes("prescription"));
 

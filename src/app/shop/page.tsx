@@ -1,7 +1,20 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { LazyFrameArt } from "@/components/lazy-frame-art";
 import { SiteHeader } from "@/components/site-header";
 import { formatMoney, products } from "@/lib/products";
+import { absoluteUrl, siteName } from "@/lib/site";
+
+export const metadata: Metadata = {
+  title: "Shop all premium glasses",
+  description: "Browse every LumaLens frame across blue-light, sun, prescription-ready, wide-fit, and luxury eyewear edits.",
+  alternates: { canonical: absoluteUrl("/shop") },
+  openGraph: {
+    title: `Shop all premium glasses | ${siteName}`,
+    description: "Compare LumaLens eyewear collections and open product pages to configure frame, fit, lens, and prescription options.",
+    url: absoluteUrl("/shop"),
+  },
+};
 
 export default function ShopPage() {
   return (

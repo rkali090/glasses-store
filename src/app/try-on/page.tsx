@@ -1,5 +1,18 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { SiteHeader } from "@/components/site-header";
+import { absoluteUrl, siteName } from "@/lib/site";
+
+export const metadata: Metadata = {
+  title: "Online try-on walkthrough",
+  description: "See how LumaLens guides shoppers from frame discovery to fit choices, prescription handling, cart review, and checkout.",
+  alternates: { canonical: absoluteUrl("/try-on") },
+  openGraph: {
+    title: `Online try-on walkthrough | ${siteName}`,
+    description: "A dedicated walkthrough for confident frame selection and checkout review.",
+    url: absoluteUrl("/try-on"),
+  },
+};
 
 export default function TryOnPage() {
   return (

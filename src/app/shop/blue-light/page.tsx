@@ -1,7 +1,20 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { LazyFrameArt } from "@/components/lazy-frame-art";
 import { SiteHeader } from "@/components/site-header";
 import { formatMoney, products } from "@/lib/products";
+import { absoluteUrl, siteName } from "@/lib/site";
+
+export const metadata: Metadata = {
+  title: "Blue-light glasses for screen-heavy days",
+  description: "Shop LumaLens blue-light frames for desk work, long screen sessions, and clear everyday eyewear.",
+  alternates: { canonical: absoluteUrl("/shop/blue-light") },
+  openGraph: {
+    title: `Blue-light glasses | ${siteName}`,
+    description: "A dedicated edit of LumaLens frames that support blue-light filtering and clear desk lenses.",
+    url: absoluteUrl("/shop/blue-light"),
+  },
+};
 
 const blueLightFrames = products.filter((product) => product.tags.includes("Blue-light") || product.lens.toLowerCase().includes("blue-light"));
 
