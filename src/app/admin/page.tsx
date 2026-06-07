@@ -3,19 +3,26 @@
 import Link from "next/link";
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { SiteHeader } from "@/components/site-header";
-import { adminCustomers, adminInsights, adminOrders, adminProducts, adminTotals, type AdminProduct } from "@/lib/admin";
+import { adminCustomers, adminInsights, adminOrders, adminProducts, adminTotals, type AdminCustomer, type AdminOrder, type AdminProduct } from "@/lib/admin";
 import { formatMoney } from "@/lib/products";
 
-const tabs = ["Overview", "Products", "Orders", "Customers"] as const;
-type AdminTab = (typeof tabs)[number];
+type AdminTab = "Overview" | "Products" | "Orders" | "Customers";
 type EditableProduct = Pick<AdminProduct, "name" | "price" | "inventory" | "status" | "channel">;
 type NewProductForm = Pick<AdminProduct, "name" | "collection" | "price" | "inventory" | "status" | "channel" | "color" | "lens" | "fit">;
+type OrderStatus = AdminOrder["status"];
 
 const ADMIN_COOKIE = "lumalens_admin_session";
 const ADMIN_COOKIE_VALUE = "demo-admin-authenticated";
 const ADMIN_PRODUCTS_KEY = "lumalens-admin-products";
-const DEMO_EMAIL = "admin@lumalens.demo";
-const DEMO_PASSWORD = "frames2026";
+const DEMO_USERNAME = "admin";
+const DEMO_PASSWORD = "admin123";
+const orderStatuses: OrderStatus[] = ["Paid", "Fulfillment", "Review", "Refunded"];
+const adminNav = [
+  { tab: "Overview", label: "Dashboard", detail: "Metrics" },
+  { tab: "Products", label: "Products", detail: "Catalog" },
+  { tab: "Orders", label: "Orders", detail: "Fulfillment" },
+  { tab: "Customers", label: "Customers", detail: "CRM" },
+] satisfies { tab: AdminTab; label: string; detail: string }[];
 
 const initialNewProduct: NewProductForm = {
   name: "",
@@ -43,6 +50,23 @@ function MetricCard({ label, value, detail, tone = "light" }: { label: string; v
       <p className="mt-4 text-3xl font-semibold tracking-[-.05em] sm:text-4xl">{value}</p>
       <p className={`mt-3 text-sm leading-6 ${tone === "dark" ? "text-[#e8f0ef]" : "text-[#334155]"}`}>{detail}</p>
     </div>
+  );
+}
+
+function AdminNavbar({ activeTab, onTabChange, onLogout }: { activeTab: AdminTab; onTabChange: (tab: AdminTab) => void; onLogout: () => void }) {
+  return (
+    <nav className="sticky top-[73px] z-40 mt-5 rounded-[1.5rem] border border-[#11263d]/10 bg-[#fffdf8]/95 p-2 shadow-xl shadow-slate-900/10 backdrop-blur sm:mt-6 sm:rounded-full" aria-label="Admin dashboard navigation">
+      <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:items-center sm:gap-3">
+        {adminNav.map((item) => (
+          <button key={item.tab} onClick={() => onTabChange(item.tab)} className={`rounded-full px-4 py-3 text-left text-sm font-semibold transition sm:px-5 ${activeTab === item.tab ? "bg-[#11263d] text-white shadow-lg shadow-slate-900/15" : "text-[#334155] hover:bg-[#e8f0ef] hover:text-[#11263d]"}`}>
+            <span className="block leading-none">{item.label}</span>
+            <span className={`mt-1 block text-[0.68rem] font-semibold uppercase tracking-[.14em] ${activeTab === item.tab ? "text-[#d7e3e1]" : "text-[#6b7280]"}`}>{item.detail}</span>
+          </button>
+        ))}
+        <Link href="/" className="rounded-full px-4 py-3 text-center text-sm font-semibold text-[#334155] hover:bg-[#e8f0ef] sm:ml-auto sm:px-5">Storefront</Link>
+        <button onClick={onLogout} className="rounded-full border border-[#11263d]/15 px-4 py-3 text-sm font-semibold text-[#11263d] hover:border-[#11263d] sm:px-5">Sign out</button>
+      </div>
+    </nav>
   );
 }
 
@@ -102,14 +126,14 @@ function buildInsertedProduct(form: NewProductForm, existing: AdminProduct[]): A
 }
 
 function LoginPanel({ onLogin }: { onLogin: () => void }) {
-  const [email, setEmail] = useState(DEMO_EMAIL);
+  const [username, setUsername] = useState(DEMO_USERNAME);
   const [password, setPassword] = useState(DEMO_PASSWORD);
   const [error, setError] = useState("");
 
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (email.trim().toLowerCase() !== DEMO_EMAIL || password !== DEMO_PASSWORD) {
-      setError("Use the demo admin credentials shown below.");
+    if (username.trim().toLowerCase() !== DEMO_USERNAME || password !== DEMO_PASSWORD) {
+      setError("Keep the demo admin username and password shown in the input boxes.");
       return;
     }
     setAdminCookie();
@@ -128,12 +152,12 @@ function LoginPanel({ onLogin }: { onLogin: () => void }) {
         <form onSubmit={submit} className="rounded-[1.75rem] border border-[#11263d]/10 bg-white p-5 shadow-2xl shadow-slate-900/10 sm:rounded-[2.5rem] sm:p-6 md:p-8">
           <p className="text-sm font-semibold uppercase tracking-[.18em] text-[#7a4f17]">Admin sign in</p>
           <h2 className="mt-3 text-3xl font-semibold tracking-[-.04em]">Access dashboard</h2>
-          <label className="mt-6 grid gap-2 text-sm font-semibold">Email<input value={email} onChange={(event) => setEmail(event.target.value)} className="rounded-2xl border border-[#11263d]/15 px-4 py-3 font-normal outline-none focus:border-[#0b5f59]" /></label>
-          <label className="mt-4 grid gap-2 text-sm font-semibold">Password<input type="password" value={password} onChange={(event) => setPassword(event.target.value)} className="rounded-2xl border border-[#11263d]/15 px-4 py-3 font-normal outline-none focus:border-[#0b5f59]" /></label>
+          <label className="mt-6 grid gap-2 text-sm font-semibold">Admin username<input value={username} onChange={(event) => setUsername(event.target.value)} className="rounded-2xl border border-[#11263d]/15 px-4 py-3 font-normal outline-none focus:border-[#0b5f59]" /></label>
+          <label className="mt-4 grid gap-2 text-sm font-semibold">Admin password<input value={password} onChange={(event) => setPassword(event.target.value)} className="rounded-2xl border border-[#11263d]/15 px-4 py-3 font-normal outline-none focus:border-[#0b5f59]" /></label>
           {error && <p className="mt-4 rounded-2xl bg-rose-50 p-3 text-sm font-semibold text-rose-700">{error}</p>}
           <button type="submit" className="interactive-lift mt-6 w-full rounded-full bg-[#11263d] px-6 py-4 font-semibold text-white">Sign in with cookie</button>
           <div className="mt-5 rounded-2xl bg-[#f7f4ee] p-4 text-sm leading-6 text-[#334155]">
-            <p><b>Demo email:</b> {DEMO_EMAIL}</p>
+            <p><b>Demo username:</b> {DEMO_USERNAME}</p>
             <p><b>Demo password:</b> {DEMO_PASSWORD}</p>
           </div>
         </form>
@@ -149,7 +173,11 @@ export default function AdminPage() {
   const [query, setQuery] = useState("");
   const [selectedSlug, setSelectedSlug] = useState(adminProducts[0].slug);
   const [draftProducts, setDraftProducts] = useState(adminProducts);
+  const [orders, setOrders] = useState(adminOrders);
+  const [customers] = useState<AdminCustomer[]>(adminCustomers);
   const [newProduct, setNewProduct] = useState<NewProductForm>(initialNewProduct);
+  const [orderFilter, setOrderFilter] = useState<OrderStatus | "All">("All");
+  const [customerQuery, setCustomerQuery] = useState("");
   const [savedAt, setSavedAt] = useState("Unsaved demo workspace");
 
   useEffect(() => {
@@ -174,6 +202,12 @@ export default function AdminPage() {
     if (!needle) return draftProducts;
     return draftProducts.filter((product) => [product.name, product.collection, product.status, product.channel, product.color].join(" ").toLowerCase().includes(needle));
   }, [draftProducts, query]);
+  const filteredOrders = useMemo(() => orderFilter === "All" ? orders : orders.filter((order) => order.status === orderFilter), [orders, orderFilter]);
+  const filteredCustomers = useMemo(() => {
+    const needle = customerQuery.trim().toLowerCase();
+    if (!needle) return customers;
+    return customers.filter((customer) => [customer.name, customer.email, customer.segment].join(" ").toLowerCase().includes(needle));
+  }, [customers, customerQuery]);
 
   function saveProducts(nextProducts: AdminProduct[], message: string) {
     setDraftProducts(nextProducts);
@@ -229,8 +263,18 @@ export default function AdminPage() {
     window.localStorage.removeItem(ADMIN_PRODUCTS_KEY);
     window.localStorage.removeItem(`${ADMIN_PRODUCTS_KEY}-status`);
     setDraftProducts(adminProducts);
+    setOrders(adminOrders);
     setSelectedSlug(adminProducts[0].slug);
     setSavedAt("Reset to seeded demo data");
+  }
+
+  function updateOrderStatus(orderId: string, status: OrderStatus) {
+    setOrders((current) => current.map((order) => order.id === orderId ? { ...order, status } : order));
+    setSavedAt(`${orderId} moved to ${status}`);
+  }
+
+  function contactCustomer(customer: AdminCustomer) {
+    setSavedAt(`Prepared outreach for ${customer.name}`);
   }
 
   function logout() {
@@ -270,12 +314,7 @@ export default function AdminPage() {
           </div>
         </div>
 
-        <div className="mt-5 grid grid-cols-2 gap-2 rounded-[1.5rem] border border-[#11263d]/10 bg-white/70 p-2 shadow-sm backdrop-blur sm:mt-6 sm:flex sm:flex-wrap sm:gap-3 sm:rounded-full">
-          {tabs.map((tab) => (
-            <button key={tab} onClick={() => setActiveTab(tab)} className={`rounded-full px-4 py-3 text-sm font-semibold transition sm:px-5 ${activeTab === tab ? "bg-[#11263d] text-white shadow-lg shadow-slate-900/15" : "text-[#334155] hover:bg-[#e8f0ef] hover:text-[#11263d]"}`}>{tab}</button>
-          ))}
-          <Link href="/" className="col-span-2 rounded-full px-4 py-3 text-center text-sm font-semibold text-[#334155] hover:bg-[#e8f0ef] sm:col-span-1 sm:ml-auto sm:px-5">View storefront →</Link>
-        </div>
+        <AdminNavbar activeTab={activeTab} onTabChange={setActiveTab} onLogout={logout} />
       </section>
 
       <section className="mx-auto max-w-7xl px-4 pb-16 sm:px-5 sm:pb-20">
@@ -284,7 +323,7 @@ export default function AdminPage() {
             <div className="rounded-[2rem] border border-[#11263d]/10 bg-white p-5 shadow-sm">
               <p className="text-sm font-semibold uppercase tracking-[.18em] text-[#0b5f59]">Admin modules</p>
               <div className="mt-5 grid gap-2">
-                {tabs.map((tab) => <button key={tab} onClick={() => setActiveTab(tab)} className={`rounded-2xl px-4 py-3 text-left text-sm font-semibold ${activeTab === tab ? "bg-[#e8f0ef] text-[#0b5f59]" : "text-[#334155] hover:bg-[#f7f4ee]"}`}>{tab}</button>)}
+                {adminNav.map((item) => <button key={item.tab} onClick={() => setActiveTab(item.tab)} className={`rounded-2xl px-4 py-3 text-left text-sm font-semibold ${activeTab === item.tab ? "bg-[#e8f0ef] text-[#0b5f59]" : "text-[#334155] hover:bg-[#f7f4ee]"}`}><span className="block">{item.label}</span><span className="mt-1 block text-xs font-medium text-[#6b7280]">{item.detail}</span></button>)}
               </div>
             </div>
             <div className="rounded-[2rem] border border-[#11263d]/10 bg-white p-5 shadow-sm">
@@ -323,7 +362,7 @@ export default function AdminPage() {
                   <div className="rounded-[1.75rem] border border-[#11263d]/10 bg-white p-5 shadow-sm sm:rounded-[2rem] sm:p-6">
                     <p className="text-sm font-semibold uppercase tracking-[.18em] text-[#7a4f17]">Recent orders</p>
                     <div className="mt-5 space-y-3">
-                      {adminOrders.map((order) => <div key={order.id} className="rounded-2xl bg-[#f7f4ee] p-4"><div className="flex items-center justify-between gap-3"><b>{order.id}</b><span className={`rounded-full border px-3 py-1 text-xs font-semibold ${statusClass(order.status)}`}>{order.status}</span></div><p className="mt-2 text-sm text-[#334155]">{order.customer} • {order.product}</p><p className="mt-2 font-semibold">{formatMoney(order.total)} <span className="text-sm font-normal text-[#334155]">{order.date}</span></p></div>)}
+                      {orders.slice(0, 5).map((order) => <div key={order.id} className="rounded-2xl bg-[#f7f4ee] p-4"><div className="flex items-center justify-between gap-3"><b>{order.id}</b><span className={`rounded-full border px-3 py-1 text-xs font-semibold ${statusClass(order.status)}`}>{order.status}</span></div><p className="mt-2 text-sm text-[#334155]">{order.customer} • {order.product}</p><p className="mt-2 font-semibold">{formatMoney(order.total)} <span className="text-sm font-normal text-[#334155]">{order.date}</span></p></div>)}
                     </div>
                   </div>
                 </div>
@@ -390,18 +429,26 @@ export default function AdminPage() {
 
             {activeTab === "Orders" && (
               <div className="rounded-[1.75rem] border border-[#11263d]/10 bg-white p-5 shadow-sm sm:rounded-[2rem] sm:p-6">
-                <p className="text-sm font-semibold uppercase tracking-[.18em] text-[#0b5f59]">Order operations</p><h2 className="mt-2 text-2xl font-semibold tracking-[-.04em] sm:text-3xl">Fulfillment queue</h2>
+                <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
+                  <div><p className="text-sm font-semibold uppercase tracking-[.18em] text-[#0b5f59]">Order operations</p><h2 className="mt-2 text-2xl font-semibold tracking-[-.04em] sm:text-3xl">Fulfillment queue</h2></div>
+                  <div className="flex flex-wrap gap-2">
+                    {(["All", ...orderStatuses] as const).map((status) => <button key={status} onClick={() => setOrderFilter(status)} className={`rounded-full px-4 py-2 text-sm font-semibold ${orderFilter === status ? "bg-[#11263d] text-white" : "border border-[#11263d]/15 bg-[#fffdf8] text-[#11263d]"}`}>{status}</button>)}
+                  </div>
+                </div>
                 <div className="mt-6 grid gap-3">
-                  {adminOrders.map((order) => <div key={order.id} className="grid gap-3 rounded-3xl border border-[#11263d]/10 p-5 md:grid-cols-[120px_1fr_140px_120px] md:items-center"><b>{order.id}</b><div><p className="font-semibold">{order.customer}</p><p className="text-sm text-[#334155]">{order.product} • {order.date}</p></div><span className={`w-fit rounded-full border px-3 py-1 text-xs font-semibold ${statusClass(order.status)}`}>{order.status}</span><b>{formatMoney(order.total)}</b></div>)}
+                  {filteredOrders.map((order) => <div key={order.id} className="grid gap-3 rounded-3xl border border-[#11263d]/10 p-5 md:grid-cols-[120px_1fr_150px_120px_160px] md:items-center"><b>{order.id}</b><div><p className="font-semibold">{order.customer}</p><p className="text-sm text-[#334155]">{order.product} • {order.date}</p></div><span className={`w-fit rounded-full border px-3 py-1 text-xs font-semibold ${statusClass(order.status)}`}>{order.status}</span><b>{formatMoney(order.total)}</b><select value={order.status} onChange={(event) => updateOrderStatus(order.id, event.target.value as OrderStatus)} className="rounded-2xl border border-[#11263d]/15 bg-[#fffdf8] px-4 py-3 text-sm font-semibold outline-none focus:border-[#0b5f59]">{orderStatuses.map((status) => <option key={status}>{status}</option>)}</select></div>)}
                 </div>
               </div>
             )}
 
             {activeTab === "Customers" && (
               <div className="rounded-[1.75rem] border border-[#11263d]/10 bg-white p-5 shadow-sm sm:rounded-[2rem] sm:p-6">
-                <p className="text-sm font-semibold uppercase tracking-[.18em] text-[#0b5f59]">Customer CRM</p><h2 className="mt-2 text-2xl font-semibold tracking-[-.04em] sm:text-3xl">Segments and lifetime value</h2>
+                <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
+                  <div><p className="text-sm font-semibold uppercase tracking-[.18em] text-[#0b5f59]">Customer CRM</p><h2 className="mt-2 text-2xl font-semibold tracking-[-.04em] sm:text-3xl">Segments and lifetime value</h2></div>
+                  <input value={customerQuery} onChange={(event) => setCustomerQuery(event.target.value)} placeholder="Search customers" className="rounded-full border border-[#11263d]/15 bg-[#fffdf8] px-5 py-3 text-sm outline-none focus:border-[#0b5f59]" />
+                </div>
                 <div className="mt-6 grid gap-4 md:grid-cols-3">
-                  {adminCustomers.map((customer) => <div key={customer.email} className="rounded-3xl border border-[#11263d]/10 bg-[#fffdf8] p-5"><div className="grid size-12 place-items-center rounded-2xl bg-[#11263d] font-semibold text-white">{customer.name.split(" ").map((part) => part[0]).join("")}</div><h3 className="mt-4 text-xl font-semibold">{customer.name}</h3><p className="mt-1 text-sm text-[#334155]">{customer.email}</p><p className="mt-4 rounded-full bg-[#e8f0ef] px-3 py-2 text-sm font-semibold text-[#0b5f59]">{customer.segment}</p><p className="mt-4 text-2xl font-semibold">{formatMoney(customer.spend)}</p></div>)}
+                  {filteredCustomers.map((customer) => <div key={customer.email} className="rounded-3xl border border-[#11263d]/10 bg-[#fffdf8] p-5"><div className="grid size-12 place-items-center rounded-2xl bg-[#11263d] font-semibold text-white">{customer.name.split(" ").map((part) => part[0]).join("")}</div><h3 className="mt-4 text-xl font-semibold">{customer.name}</h3><p className="mt-1 text-sm text-[#334155]">{customer.email}</p><p className="mt-4 w-fit rounded-full bg-[#e8f0ef] px-3 py-2 text-sm font-semibold text-[#0b5f59]">{customer.segment}</p><p className="mt-4 text-2xl font-semibold">{formatMoney(customer.spend)}</p><button onClick={() => contactCustomer(customer)} className="mt-4 w-full rounded-full border border-[#11263d]/20 px-5 py-3 text-sm font-semibold text-[#11263d]">Prepare outreach</button></div>)}
                 </div>
               </div>
             )}

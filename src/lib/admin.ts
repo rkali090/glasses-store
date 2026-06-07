@@ -65,12 +65,18 @@ export const adminOrders: AdminOrder[] = [
   { id: "LL-1047", customer: "Noah Kim", product: "Coastal Green", status: "Fulfillment", total: 238, date: "9:16 AM" },
   { id: "LL-1046", customer: "Iris Patel", product: "Studio Clear", status: "Review", total: 119, date: "Yesterday" },
   { id: "LL-1045", customer: "Jon Bell", product: "Noir Line", status: "Refunded", total: 179, date: "Yesterday" },
+  { id: "LL-1044", customer: "Avery Stone", product: "Sienna Round", status: "Paid", total: 209, date: "2 days ago" },
+  { id: "LL-1043", customer: "Rina Ahmed", product: "Aurora Gold", status: "Fulfillment", total: 299, date: "2 days ago" },
+  { id: "LL-1042", customer: "Mateo Ruiz", product: "Studio Clear", status: "Paid", total: 149, date: "3 days ago" },
 ];
 
 export const adminCustomers: AdminCustomer[] = [
   { name: "Maya Carter", email: "maya@example.com", segment: "Repeat buyer", spend: 527 },
   { name: "Noah Kim", email: "noah@example.com", segment: "High intent", spend: 238 },
   { name: "Iris Patel", email: "iris@example.com", segment: "Prescription", spend: 389 },
+  { name: "Avery Stone", email: "avery@example.com", segment: "Blue-light", spend: 209 },
+  { name: "Rina Ahmed", email: "rina@example.com", segment: "Luxury sun", spend: 714 },
+  { name: "Mateo Ruiz", email: "mateo@example.com", segment: "First order", spend: 149 },
 ];
 
 export const adminInsights = [
